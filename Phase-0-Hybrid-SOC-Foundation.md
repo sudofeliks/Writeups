@@ -23,6 +23,7 @@ Within *Active Directory Users and Computers* (`dsa.msc`), dedicated Organizatio
 * **`SOC_Workstations`:** Houses domain-joined corporate endpoints subject to centralized security telemetry and EDR onboarding policies.
 
 > 📸 **\[Screenshot: Active Directory `SOC_Users` Organizational Unit\]**
+> 
 > ![Figure 1: Active Directory SOC_Users Organizational Unit](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-32-07.png)
 > *Figure 1: `dsa.msc` on Windows Server 2025 (`<DC_IP>`) displaying the `SOC_Users` OU with the `analyst01` and `aitm-target` accounts.*
 
