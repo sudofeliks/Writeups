@@ -23,11 +23,11 @@ Within *Active Directory Users and Computers* (`dsa.msc`), dedicated Organizatio
 * **`SOC_Workstations`:** Houses domain-joined corporate endpoints subject to centralized security telemetry and EDR onboarding policies.
 
 > 📸 **\[Screenshot: Active Directory `SOC_Users` Organizational Unit\]**
-> ![[Screenshot From 2026-11-06 12-32-07.png]]
+> ![Figure 1: Active Directory SOC_Users Organizational Unit](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-32-07.png)
 > *Figure 1: `dsa.msc` on Windows Server 2025 (`<DC_IP>`) displaying the `SOC_Users` OU with the `analyst01` and `aitm-target` accounts.*
 
 > 📸 **\[Screenshot: Active Directory `SOC_Workstations` Organizational Unit\]**
-> ![[Screenshot From 2026-11-06 12-33-07.png]]
+> ![Figure 2: Active Directory SOC_Workstations Organizational Unit](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-33-07.png)
 > *Figure 2: `dsa.msc` displaying the `SOC_Workstations` OU containing the domain-joined Windows 11 endpoint.*
 
 ### Enforcing Granular Authentication Telemetry via GPO (Event ID 4624 & 4625)
@@ -37,7 +37,7 @@ By default, Windows does not log all granular authentication events required for
 Under `Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Advanced Audit Policy Configuration -> Audit Policies -> Logon/Logoff`, both **Audit Logon** and **Audit Other Logon/Logoff Events** were configured to record **Success and Failure** events (generating Windows Security Event IDs `4624` and `4625`).
 
 > 📸 **\[Screenshot: Group Policy Management Editor – Advanced Audit Policy Configuration\]**
-> > ![[Screenshot From 2026-11-06 12-40-34.png]]
+> > > ![Figure 3: Enforcing Success and Failure logon auditing](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-40-34.png)
 > *Figure 3: Enforcing `Success and Failure` logon auditing via Domain Group Policy (`gpmc.msc`).*
 
 ### Endpoint Domain Join (`Win11Victim`)
@@ -46,7 +46,7 @@ The Windows 11 workstation was renamed to `Win11Victim`, configured to use the D
 
 > 📸 **\[Screenshot: Domain Session & GPO Verification on `Win11Victim`\]**
 > 
-> ![[Screenshot From 2026-11-06 12-29-14.png]]
+> ![Figure 4: Domain Session and GPO Verification on Win11Victim](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-29-14.png)
 > *Figure 4: Terminal verification on `Win11Victim` confirming authentication as `soclab\aitm-target` (`whoami`) and successful retrieval of domain Group Policy objects (`gpresult /r`).*
 
 ## 3. Step 2: Ubuntu Server Transformation – Containerized MISP CTI & OWASP Juice Shop
@@ -90,7 +90,7 @@ During the initial deployment of the MISP multi-container stack (`sudo docker co
 2. **Reverse Proxy Crash Loop (`misp-docker-misp-nginx-1 Restarting (1)`):** Although the core application and `juice-shop` (port `3000`) were operational, attempting to access `https://<CTI_NODE_IP>` from the internal subnet resulted in `Connection refused`. Running `sudo docker ps -a` showed `misp-docker-misp-nginx-1` stuck in a continuous `Restarting (1)` loop without binding ports `80` or `443`.
 
 > 📸 **\[Screenshot: Docker Diagnostics – `misp-nginx` Restart Loop\]**
-> ![[Screenshot From 2026-11-07 13-18-26 1.png]]
+> ![Figure 5: misp-docker-misp-nginx-1 Restarting state](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-07%2013-18-26%201.png)
 > *Figure 5: Container diagnostics showing `misp-docker-misp-nginx-1` in a `Restarting (1)` state prior to TLS certificate provisioning.*
 
 #### Root Cause Analysis & Resolution
@@ -117,15 +117,15 @@ sudo docker compose up -d
 Immediately after provisioning the X.509 certificate pair, `misp-docker-misp-nginx-1` bound ports `80/tcp` and `443/tcp` on `<ANY_INTERFACE_IP>` and achieved a `healthy` status. Inside the MISP web interface (`https://<CTI_NODE_IP>`), default administrator credentials were rotated, default OSINT feed metadata was loaded (`Sync Actions -> Feeds -> Load default feed metadata`), public threat feeds (**CIRCL OSINT Feed** and **The Botvrij.eu Data**) were enabled and cached, and a dedicated REST API authentication key (`MISP_KEY`) was generated for Microsoft Sentinel integration.
 
 > 📸 **\[Screenshot: Healthy Docker Stack (`sudo docker ps`)\]**
-> ![[Screenshot From 2026-11-07 14-04-19 1.png]]
+> ![Figure 6: Healthy Docker Stack verification](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-07%2014-04-19%201.png)
 > *Figure 6: Verification via `sudo docker ps` confirming all MISP microservices and the `juice-shop` container are running and `healthy`.*
 
 > 📸 **\[Screenshot: OWASP Juice Shop Web Application on Port 3000\]**
-> ![[Screenshot From 2026-11-07 14-09-53 1.png]]
+> ![Figure 7: OWASP Juice Shop Web Application](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-07%2014-09-53%201.png)
 > *Figure 7: OWASP Juice Shop running at `http://<CTI_NODE_IP>:3000`, ready for Azure Application Gateway WAF v2 testing.*
 
 > 📸 **\[Screenshot: MISP Threat Intelligence Platform – Ingested OSINT IOCs\]**
-> ![[Screenshot From 2026-11-07 14-55-21 1.png]]
+> ![Figure 8: MISP Threat Intelligence Platform Ingested OSINT IOCs](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-07%2014-55-21%201.png)
 > *Figure 8: MISP instance (`https://<CTI_NODE_IP>`) populated with network and domain Indicators of Compromise from public OSINT feeds.*
 
 ## 4. Step 3: Infrastructure as Code (Bicep), API Automation (Python) & Detection Engineering (KQL)
