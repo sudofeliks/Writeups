@@ -25,10 +25,12 @@ Within *Active Directory Users and Computers* (`dsa.msc`), dedicated Organizatio
 > 📸 **\[Screenshot: Active Directory `SOC_Users` Organizational Unit\]**
 > 
 > ![Figure 1: Active Directory SOC_Users Organizational Unit](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-32-07.png)
+> 
 > *Figure 1: `dsa.msc` on Windows Server 2025 (`<DC_IP>`) displaying the `SOC_Users` OU with the `analyst01` and `aitm-target` accounts.*
 
 > 📸 **\[Screenshot: Active Directory `SOC_Workstations` Organizational Unit\]**
 > ![Figure 2: Active Directory SOC_Workstations Organizational Unit](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-33-07.png)
+> 
 > *Figure 2: `dsa.msc` displaying the `SOC_Workstations` OU containing the domain-joined Windows 11 endpoint.*
 
 ### Enforcing Granular Authentication Telemetry via GPO (Event ID 4624 & 4625)
@@ -39,6 +41,7 @@ Under `Computer Configuration -> Policies -> Windows Settings -> Security Settin
 
 > 📸 **\[Screenshot: Group Policy Management Editor – Advanced Audit Policy Configuration\]**
 > > > ![Figure 3: Enforcing Success and Failure logon auditing](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-40-34.png)
+> 
 > *Figure 3: Enforcing `Success and Failure` logon auditing via Domain Group Policy (`gpmc.msc`).*
 
 ### Endpoint Domain Join (`Win11Victim`)
@@ -48,6 +51,7 @@ The Windows 11 workstation was renamed to `Win11Victim`, configured to use the D
 > 📸 **\[Screenshot: Domain Session & GPO Verification on `Win11Victim`\]**
 > 
 > ![Figure 4: Domain Session and GPO Verification on Win11Victim](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-06%2012-29-14.png)
+> 
 > *Figure 4: Terminal verification on `Win11Victim` confirming authentication as `soclab\aitm-target` (`whoami`) and successful retrieval of domain Group Policy objects (`gpresult /r`).*
 
 ## 3. Step 2: Ubuntu Server Transformation – Containerized MISP CTI & OWASP Juice Shop
@@ -92,6 +96,7 @@ During the initial deployment of the MISP multi-container stack (`sudo docker co
 
 > 📸 **\[Screenshot: Docker Diagnostics – `misp-nginx` Restart Loop\]**
 > ![Figure 5: misp-docker-misp-nginx-1 Restarting state](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-07%2013-18-26%201.png)
+> 
 > *Figure 5: Container diagnostics showing `misp-docker-misp-nginx-1` in a `Restarting (1)` state prior to TLS certificate provisioning.*
 
 #### Root Cause Analysis & Resolution
@@ -119,15 +124,18 @@ Immediately after provisioning the X.509 certificate pair, `misp-docker-misp-ngi
 
 > 📸 **\[Screenshot: Healthy Docker Stack (`sudo docker ps`)\]**
 > ![Figure 6: Healthy Docker Stack verification](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-07%2014-04-19%201.png)
-> *Figure 6: Verification via `sudo docker ps` confirming all MISP microservices and the `juice-shop` container are running and `healthy`.*
+>
+*Figure 6: Verification via `sudo docker ps` confirming all MISP microservices and the `juice-shop` container are running and `healthy`.*
 
 > 📸 **\[Screenshot: OWASP Juice Shop Web Application on Port 3000\]**
 > ![Figure 7: OWASP Juice Shop Web Application](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-07%2014-09-53%201.png)
-> *Figure 7: OWASP Juice Shop running at `http://<CTI_NODE_IP>:3000`, ready for Azure Application Gateway WAF v2 testing.*
+>
+*Figure 7: OWASP Juice Shop running at `http://<CTI_NODE_IP>:3000`, ready for Azure Application Gateway WAF v2 testing.*
 
 > 📸 **\[Screenshot: MISP Threat Intelligence Platform – Ingested OSINT IOCs\]**
 > ![Figure 8: MISP Threat Intelligence Platform Ingested OSINT IOCs](Pictures/On-Premises%20Foundation/Screenshot%20From%202026-11-07%2014-55-21%201.png)
-> *Figure 8: MISP instance (`https://<CTI_NODE_IP>`) populated with network and domain Indicators of Compromise from public OSINT feeds.*
+>
+*Figure 8: MISP instance (`https://<CTI_NODE_IP>`) populated with network and domain Indicators of Compromise from public OSINT feeds.*
 
 ## 4. Step 3: Infrastructure as Code (Bicep), API Automation (Python) & Detection Engineering (KQL)
 
