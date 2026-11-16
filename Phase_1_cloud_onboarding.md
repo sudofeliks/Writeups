@@ -11,7 +11,7 @@ Implementing strict Conditional Access (CA) policies and Phishing-Resistant MFA 
 * **Security Control:** These accounts utilize highly complex, 32+ character passwords stored securely offline. They will be strictly excluded from all future Conditional Access policies to ensure persistent backend access during identity outages.
 
 > 📸 **\[Screenshot: BreakGlass Accounts\]**
-> ![[Screenshot From 2026-11-15 10-51-33.png]]
+> ![BreakGlass Accounts](Pictures/Cloud-onboarding/Screenshot%20From%202026-11-15%2010-51-33.png)
 >
  *Figure 1: View of the Entra ID Users panel showing the primary `socadmin` account and the two emergency Break-Glass accounts.*
 
@@ -30,7 +30,7 @@ az deployment group create --resource-group rg-cyberrange-prod-cus --template-fi
 ```
 
 > 📸 **\[Screenshot: Azure Cloud Shell\]**
-> ![[Screenshot From 2026-11-15 14-47-34.png]]
+> ![BreakGlass Accounts](Pictures/Cloud-onboarding/Screenshot%20From%202026-11-15%2014-47-34.png)
 > 
   *Figure 2: Azure Cloud Shell terminal confirming the `provisioningState: Succeeded` output for the Bicep template deployments.*
 
@@ -42,11 +42,12 @@ The final step involved bridging the standalone Microsoft Sentinel workspace wit
 3. **Endpoint Management Bridge:** To facilitate the automatic onboarding of Windows endpoints in subsequent phases, the Microsoft Intune connection was toggled on within Defender. The connection status in the Intune portal initially showed as `Available`. It was fully `Enabled` by toggling the "Allow Microsoft Defender for Endpoint to enforce Endpoint Security Configurations" and Windows device connection settings.
 
 > 📸 **\[Microsoft Defender - Sentinel connected \]**
-> ![[Writeups/Pictures/Cloud-onboarding/Screenshot From 2026-11-16 11-12-04.png]]
+> ![BreakGlass Accounts](Pictures/Cloud-onboarding/Screenshot%20From%202026-11-16%2011-12-04.png)
+> 
  `Sentinel-Defender-Unified.png` - *Microsoft Defender portal showing Microsoft Sentinel successfully connected to the unified workspace.*
 
 > 📸 **\[Microsoft Intune Endpoint Security - Microsoft Defender for Endpoint - Enabled  \]**
-> ![[Screenshot From 2026-11-16 11-22-11.png]]
+> ![BreakGlass Accounts](Pictures/Cloud-onboarding/Screenshot%20From%202026-11-16%2011-22-11.png)
 > 
  `Intune-MDE-Connection.png` - *Microsoft Intune Endpoint Security panel displaying the connection status to Microsoft Defender for Endpoint as Enabled.*
 
