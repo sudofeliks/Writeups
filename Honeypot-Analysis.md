@@ -36,7 +36,7 @@ class HoneypotHandler(http.server.SimpleHTTPRequestHandler):
         
         # GeoIP tracking
         try:
-            req = urllib.request.urlopen(f"[http://ip-api.com/json/](http://ip-api.com/json/){ip}")
+            req = urllib.request.urlopen(f"http://ip-api.com/json/{ip}")
             loc_data = json.loads(req.read().decode())
             country = loc_data.get('country', 'Unknown')
             city = loc_data.get('city', 'Unknown')
