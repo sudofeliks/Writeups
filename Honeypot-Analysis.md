@@ -68,7 +68,7 @@ class HoneypotHandler(http.server.SimpleHTTPRequestHandler):
 
 with socketserver.TCPServer(("", PORT), HoneypotHandler) as httpd:
     httpd.serve_forever()
-````
+```
 ### Traffic Analysis (First 72 Hours)
 The automated traffic was heavily dominated by two distinct groups:
 
